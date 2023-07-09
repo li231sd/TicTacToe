@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic Tac Toe</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 36px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 5px;
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tic Tac Toe</h1>
+        <div class="board">
+            <div class="cell" onclick="handleClick(0)"></div>
+            <div class="cell" onclick="handleClick(1)"></div>
+            <div class="cell" onclick="handleClick(2)"></div>
+            <div class="cell" onclick="handleClick(3)"></div>
+            <div class="cell" onclick="handleClick(4)"></div>
+            <div class="cell" onclick="handleClick(5)"></div>
+            <div class="cell" onclick="handleClick(6)"></div>
+            <div class="cell" onclick="handleClick(7)"></div>
+            <div class="cell" onclick="handleClick(8)"></div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize an empty board
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let currentPlayer = 'X';
+
+        const cells = document.getElementsByClassName('cell');
+        const boardContainer = document.querySelector('.board');
+
+        // Add click event listeners to each cell
+        function handleClick(index) {
+            // If the cell is empty, mark it with the current player's symbol
+            if (board[index] === '') {
+                cells[index].textContent = currentPlayer;
+                board[index] = currentPlayer;
+
+                // Switch to the next player
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+
+                // Check for a winner
+                if (checkWinner(currentPlayer)) {
+                    alert(currentPlayer + ' wins!');
+                    resetBoard();
+                    return;
+                }
+
+                // Check for a tie
+                if (board.every(cell => cell !== '')) {
+                    alert("It's a tie!");
+                    resetBoard();
+                    return;
+                }
+            }
+        }
+
+        // Function to check if a player has won
+        function checkWinner(player) {
+            const winningCombinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                [0, 4, 8], [2, 4, 6]             // Diagonals
+            ];
+
+            return winningCombinations.some(combination => {
+                return combination.every(index => board[index] === player);
+            });
+        }
+
+        // Function to reset the board
+        function resetBoard() {
+            board = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+
+            Array.from(cells).forEach(cell => {
+                cell.textContent = '';
+            });
+        }
+    </script>
+</body>
+</html>
